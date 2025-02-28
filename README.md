@@ -20,18 +20,20 @@ A NetBox plugin that provides a hierarchical tree view of your IP Address Manage
 
 ## Installation
 
-### 1. Install the package
+### Standard Installation
+
+#### 1. Install the package
 
 ```bash
 # Download the plugin
-git clone https://github.com/Kani999/netbox-ipamtree.git
+git clone https://github.com/Snoo-py/netbox-ipamtree.git
 cd netbox-ipamtree
 
 # Install the plugin
 pip install -e .
 ```
 
-### 2. Enable the plugin in NetBox
+#### 2. Enable the plugin in NetBox
 
 Add the plugin to your NetBox configuration. Edit your `configuration.py` file:
 
@@ -48,7 +50,7 @@ PLUGINS_CONFIG = {
 }
 ```
 
-### 3. Run migrations and collect static files
+#### 3. Run migrations and collect static files
 
 ```bash
 # Apply any migrations
@@ -58,7 +60,7 @@ python /opt/netbox/netbox/manage.py migrate
 python /opt/netbox/netbox/manage.py collectstatic --no-input
 ```
 
-### 4. Restart NetBox services
+#### 4. Restart NetBox services
 
 ```bash
 # If using supervisord
@@ -66,6 +68,48 @@ supervisorctl restart netbox netbox-rq
 
 # If using systemd
 systemctl restart netbox netbox-rq
+```
+
+### Docker Installation
+
+If you're using NetBox with Docker (either with the official NetBox Docker image or with NetBox Docker by netbox-community), follow these steps:
+
+#### 1. Add the plugin to your plugin requirements file
+
+Create or modify the `plugin_requirements.txt` file in your NetBox Docker directory:
+
+```
+ipamtree @ git+https://github.com/Snoo-py/netbox-ipamtree
+```
+
+#### 2. Update your Docker configuration
+
+If you're using the netbox-docker setup, modify the `configuration/plugins.py` file:
+
+```python
+PLUGINS = [
+    'ipamtree',
+]
+
+# Optional: Plugin configuration settings
+PLUGINS_CONFIG = {
+    'ipamtree': {
+        # Add any plugin-specific settings here
+    }
+}
+```
+
+#### 3. Rebuild your Docker containers
+
+```bash
+# Pull the latest images
+docker-compose pull
+
+# Build the NetBox image
+docker-compose build
+
+# Restart the containers
+docker-compose up -d
 ```
 
 ## Usage
@@ -88,7 +132,7 @@ You can expand and collapse tree nodes to explore your IP address hierarchy.
 
 ```bash
 # Clone the repository
-git clone https://github.com/Kani999/netbox-ipamtree.git
+git clone https://github.com/Snoo-py/netbox-ipamtree.git
 cd netbox-ipamtree
 
 # Create a virtual environment
